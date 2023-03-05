@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 7070
 spring:
   application:
     name: PandaPlate
@@ -18,4 +18,4 @@ mybatis-plus:
     db-config:
       id-type: ASSIGN_ID
 PandaPlate:
-  imgPath: /Users/edmundxie/Downloads/PandaPlateImages/
+  imgPath: /front/PandaPlateImages/
