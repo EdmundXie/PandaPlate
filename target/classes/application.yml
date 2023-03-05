@@ -18,4 +18,4 @@ mybatis-plus:
     db-config:
       id-type: ASSIGN_ID
 PandaPlate:
-  imgPath: /front/PandaPlateImages/
+  imgPath: /Users/edmundxie/Downloads/PandaPlateImages/
