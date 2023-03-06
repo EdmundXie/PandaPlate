@@ -9,6 +9,7 @@ import com.edmund.PandaPlate.utils.SMSUtils;
 import com.edmund.PandaPlate.utils.ValidateCodeUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Projectname: PandaPlate
@@ -32,6 +34,9 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private StringRedisTemplate redisTemplate;
+
     //发送手机验证码
     @PostMapping("/sendMsg")
     public R<String> sendMsg(@RequestBody User user, HttpSession session){
@@ -46,8 +51,12 @@ public class UserController {
 //            SMSUtils.sendMessage("验证码短信","SMS_271485780","15580841067",code);
             log.info("code = {}",code);
 
-            //需要将生成的验证码保存起来校验
-            session.setAttribute(phone,code);
+            //需要将生成的验证码保存起在session中校验
+//            session.setAttribute(phone,code);
+
+            //将生成的验证码缓存到redis中，并设置时间限制
+            redisTemplate.opsForValue().set(phone,code,300l, TimeUnit.SECONDS);
+
             return R.success("短信发送成功,code="+code+"");
         }
         return R.error("短信发送失败");
@@ -61,7 +70,8 @@ public class UserController {
         String code = userMap.get("code").toString();
 
         //如果手机验证码与之前session存的一致且不为空
-        if(session.getAttribute(phone).equals(code)&&code!=null){
+        String inputCode = redisTemplate.opsForValue().get(phone);
+        if(inputCode.equals(code)&&code!=null){
             LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
             wrapper.eq(User::getPhone,phone);
             User user = userService.getOne(wrapper);
@@ -76,6 +86,10 @@ public class UserController {
             }
             //保存登录信息
             session.setAttribute("user",user.getId());
+
+            //如果登录成功，删除redis中缓存的code
+            redisTemplate.delete(phone);
+
             return R.success(user);
         }
         return R.error("验证码错误");
