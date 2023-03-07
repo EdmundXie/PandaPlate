@@ -38,9 +38,28 @@ public static final AntPathMatcher PATH_MATCHER=new AntPathMatcher();
         HttpServletRequest req = (HttpServletRequest) servletRequest;
         HttpServletResponse res = (HttpServletResponse) servletResponse;
         String uri = req.getRequestURI();
+//        String path = req.getContextPath();
 
         //定义不需要登录处理的路径
-        String[] publicUriList = {"/employee/login","/employee/logout", "/backend/**", "/front/**","/common/**","/user/sendMsg","/user/login"};
+        String[] publicUriList = {
+                "/employee/login",
+                "/employee/logout",
+                "/backend/**",
+                "/front/**",
+                "/common/**",
+                "/user/sendMsg",
+                "/user/login",
+
+                "/doc.html",
+                "/webjars/**",
+                "/swagger-resources",
+                "/v2/api-docs"
+        };
+        if(uri.equals("/")){
+            //如果是首页
+            res.sendRedirect("/front/index.html");
+            return;
+        }
 
         if(check(publicUriList,uri)){
             //如不需要处理，放行
