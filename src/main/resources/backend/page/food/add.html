@@ -448,7 +448,7 @@
               if (valid) {
                 let params = {...this.ruleForm}
                 // params.flavors = this.dishFlavors
-                params.status = this.ruleForm ? 1 : 0
+                params.status = this.ruleForm.status ? 1 : 0
                 params.price *= 100
                 params.categoryId = this.ruleForm.categoryId
                 params.flavors = this.dishFlavors.map(obj => ({ ...obj, value: JSON.stringify(obj.value) }))

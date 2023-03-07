@@ -24,7 +24,6 @@ import java.io.IOException;
  */
 @WebFilter(filterName = "loginCheckFilter",urlPatterns = "/*")
 @Slf4j
-@Component
 public class LoginCheckFilter implements Filter {
 public static final AntPathMatcher PATH_MATCHER=new AntPathMatcher();
 

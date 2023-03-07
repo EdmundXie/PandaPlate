@@ -9,6 +9,8 @@ import com.edmund.PandaPlate.utils.SMSUtils;
 import com.edmund.PandaPlate.utils.ValidateCodeUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,7 +37,7 @@ public class UserController {
     private UserService userService;
 
     @Autowired
-    private StringRedisTemplate redisTemplate;
+    private RedisTemplate redisTemplate;
 
     //发送手机验证码
     @PostMapping("/sendMsg")
@@ -55,7 +57,7 @@ public class UserController {
 //            session.setAttribute(phone,code);
 
             //将生成的验证码缓存到redis中，并设置时间限制
-            redisTemplate.opsForValue().set(phone,code,300l, TimeUnit.SECONDS);
+            redisTemplate.opsForValue().set(phone,code,5, TimeUnit.MINUTES);
 
             return R.success("短信发送成功,code="+code+"");
         }
@@ -70,8 +72,8 @@ public class UserController {
         String code = userMap.get("code").toString();
 
         //如果手机验证码与之前session存的一致且不为空
-        String inputCode = redisTemplate.opsForValue().get(phone);
-        if(inputCode.equals(code)&&code!=null){
+        String inputCode = (String) redisTemplate.opsForValue().get(phone);
+        if(code!=null&&inputCode.equals(code)){
             LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
             wrapper.eq(User::getPhone,phone);
             User user = userService.getOne(wrapper);
