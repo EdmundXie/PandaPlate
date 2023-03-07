@@ -15,6 +15,8 @@ import com.edmund.PandaPlate.service.SetmealService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -48,6 +50,7 @@ public class SetmealController {
 
     //新增套餐
     @PostMapping
+    @CacheEvict(value = "setmealCache",allEntries = true)
     public R<String> add(@RequestBody SetmealDto setmealDto){
 
         setmealService.saveWithDishes(setmealDto);
@@ -56,6 +59,7 @@ public class SetmealController {
 
     //批量删除，需操作两张表
     @DeleteMapping
+    @CacheEvict(value = "setmealCache",allEntries = true)
     public R<String> delete(Long[] ids){
         for(Long id:ids){
             setmealService.deleteByIdWithDishes(id);
@@ -65,6 +69,7 @@ public class SetmealController {
 
     //批量修改status,只需操作一张表
     @PostMapping("/status/{status}")
+    @CacheEvict(value = "setmealCache",allEntries = true)
     public R<String> saleSatus(@PathVariable int status,Long[] ids){
         for(Long id:ids){
             Setmeal setmeal = setmealService.getById(id);
@@ -76,6 +81,7 @@ public class SetmealController {
 
     //修改套餐,需操作两张表
     @PutMapping
+    @CacheEvict(value = "setmealCache",key = "#setmealDto.categoryId+'_'+#setmealDto.status")
     public R<String> update(@RequestBody SetmealDto setmealDto){
         setmealService.updateWithDishes(setmealDto);
         return R.success("修改成功");
@@ -117,6 +123,7 @@ public class SetmealController {
     //根据id查询套餐list
     //wrapper and 用多个wrapper函数链接
     @GetMapping("/list")
+    @Cacheable(value = "setmealCache",key = "#categoryId+'_'+#status")
     public R<List<Setmeal>> getList(Long categoryId,Integer status){
         LambdaQueryWrapper<Setmeal> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(categoryId!=null,Setmeal::getCategoryId,categoryId);

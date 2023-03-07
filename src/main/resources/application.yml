@@ -1,6 +1,9 @@
 server:
   port: 7070
 spring:
+  cache:
+    redis:
+      time-to-live: 1800000
   application:
     name: PandaPlate
   datasource:

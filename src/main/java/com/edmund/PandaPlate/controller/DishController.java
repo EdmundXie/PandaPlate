@@ -105,7 +105,6 @@ public class DishController {
     //查询一个category下的所有菜品
     //加redis缓存，防止多用户并发访问造成数据库崩溃
     //根据分类查分类下菜品id，查redis
-    //
     @GetMapping("/list")
     public R<List<DishDto>> list(Dish dish){
         //根据categoryId,查redis，若不为空，直接返回redis中的数据
