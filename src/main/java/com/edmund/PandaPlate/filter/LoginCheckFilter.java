@@ -55,11 +55,6 @@ public static final AntPathMatcher PATH_MATCHER=new AntPathMatcher();
                 "/swagger-resources",
                 "/v2/api-docs"
         };
-        if(uri.equals("/")){
-            //如果是首页
-            res.sendRedirect("/front/index.html");
-            return;
-        }
 
         if(check(publicUriList,uri)){
             //如不需要处理，放行
