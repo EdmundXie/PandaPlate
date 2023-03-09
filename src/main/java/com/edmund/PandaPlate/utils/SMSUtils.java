@@ -25,8 +25,10 @@ public class SMSUtils {
      * @param param 参数
      */
 
+    private static String accessKeyId=""; // 阿里云短信服务器的登录key
+    private static String secret=""; //登录密码
     public static void sendMessage(String signName, String templateCode,String phoneNumbers,String param){
-        DefaultProfile profile = DefaultProfile.getProfile("cn-hangzhou", "LTAI5t927rAas3iNG2TJWvKu", "y1kcoEuAKZ2L2qfa5hgLQKSXlicmkP");
+        DefaultProfile profile = DefaultProfile.getProfile("cn-hangzhou", accessKeyId, secret);
         IAcsClient client = new DefaultAcsClient(profile);
 
         SendSmsRequest request = new SendSmsRequest();
