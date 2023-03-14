@@ -14,7 +14,7 @@ Panda Plate - Online Chinese Food Ordering System
 3. Maven 3.6.1
 4. Node.js v16.15.1
 5. Redis 6.2.6
-6. MySQL 5.7
+6. MySQL 5.7.1
 
 ## Front-end and back-end development
 
