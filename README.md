@@ -31,11 +31,11 @@ Panda Plate - Online Chinese Food Ordering System
 ### adminLevel
 
 ![img.png](assets/adminLogin.png)
-<center>admin login page<center>
+<p align="center">admin login page</p>
 
 
 ![img.png](assets/adminPage.png#pic_center)
-<center>admin main page<center>
+<p align="center">admin main page</p>
 
 
 
