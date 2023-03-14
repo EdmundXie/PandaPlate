@@ -10,3 +10,4 @@
 *.log
 ### propreties ###
 .yml
+.DS_Store
