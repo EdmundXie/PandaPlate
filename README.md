@@ -40,4 +40,4 @@ Panda Plate - Online Chinese Food Ordering System
 
 
 ### userLevel
-<img src="assets/userPage.png" width="30%">
+<div align=center><img src="assets/userPage.png#pic_center" width="30%"></div>
