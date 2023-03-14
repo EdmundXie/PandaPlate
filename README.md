@@ -28,12 +28,16 @@ Panda Plate - Online Chinese Food Ordering System
 
 ## **Project results**
 
-###adminLevel
-admin login page
+### adminLevel
+
 ![img.png](assets/adminLogin.png)
+<center>admin login page<center>
 
-admin main page
-![img.png](assets/adminPage.png)
 
-###userLevel
-![img.png](assets/userPage.png)
+![img.png](assets/adminPage.png#pic_center)
+<center>admin main page<center>
+
+
+
+### userLevel
+<img src="assets/userPage.png#pic_center=200x" alt="img.png" style="zoom:50%;" />
